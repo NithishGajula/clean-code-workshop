@@ -1,11 +1,8 @@
 package com.movierental;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Customer {
     private final String name;
-    private final List<Rental> rentals = new ArrayList<>();
+    private Rentals rentals = new Rentals();
 
     public Customer(String name) {
         this.name = name;
@@ -20,31 +17,17 @@ public class Customer {
     }
 
     public String statement() {
-        return new TextStatement().display(this.getName(), this.rentals, this.totalAmount(), this.totalFrequentRenterPoints());
+        Rentals rentals = this.rentals;
+        return new TextStatement().display(this.getName(), rentals);
     }
 
     public String htmlStatement() {
-        return new HtmlStatement().display(this.getName(), this.rentals, this.totalAmount(), this.totalFrequentRenterPoints());
-    }
-
-    private int totalFrequentRenterPoints() {
-        int totalFrequentRenterPoints = 0;
-        for (Rental each : rentals) {
-            totalFrequentRenterPoints += each.getFrequentRenterPoints();
-        }
-        return totalFrequentRenterPoints;
-    }
-
-    private double totalAmount() {
-        double totalAmount = 0;
-        for (Rental each : rentals) {
-            totalAmount += each.getAmount();
-        }
-        return totalAmount;
+        Rentals rentals = this.rentals;
+        return new HtmlStatement().display(this.getName(), rentals);
     }
 
     private class TextStatement {
-        public String display(String name, List<Rental> rentals, double totalAmount, int totalFrequentRenterPoints) {
+        public String display(String name, Rentals rentals) {
             StringBuilder result = new StringBuilder("Rental Record for " + name + "\n");
             for (Rental each : rentals) {
                 //show figures for this rental
@@ -52,14 +35,14 @@ public class Customer {
             }
 
             //add footer lines result
-            result.append("Amount owed is ").append(totalAmount).append("\n");
-            result.append("You earned ").append(totalFrequentRenterPoints).append(" frequent renter points");
+            result.append("Amount owed is ").append(rentals.totalAmount()).append("\n");
+            result.append("You earned ").append(rentals.totalFrequentRenterPoints()).append(" frequent renter points");
             return result.toString();
         }
     }
 
     private class HtmlStatement {
-        public String display(String name, List<Rental> rentals, double totalAmount, int totalFrequentRenterPoints) {
+        public String display(String name, Rentals rentals) {
             StringBuilder result = new StringBuilder("<h1>Rental Record for <b>" + name + "</b></h1><br/>");
             for (Rental each : rentals) {
                 //show figures for this rental
@@ -67,8 +50,8 @@ public class Customer {
             }
 
             //add footer lines result
-            result.append("Amount owed is <b>").append(totalAmount).append("</b><br/>");
-            result.append("You earned <b>").append(totalFrequentRenterPoints).append("</b> frequent renter points");
+            result.append("Amount owed is <b>").append(rentals.totalAmount()).append("</b><br/>");
+            result.append("You earned <b>").append(rentals.totalFrequentRenterPoints()).append("</b> frequent renter points");
             return result.toString();
         }
     }
