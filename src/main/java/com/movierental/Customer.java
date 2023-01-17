@@ -32,6 +32,19 @@ public class Customer {
         return result.toString();
     }
 
+    public String htmlStatement() {
+        StringBuilder result = new StringBuilder("<h1>Rental Record for <b>" + getName() + "</b></h1><br/>");
+        for (Rental each : rentals) {
+            //show figures for this rental
+            result.append(each.getMovie().getTitle()).append(" ").append(each.getAmount()).append("<br/>");
+        }
+
+        //add footer lines result
+        result.append("Amount owed is <b>").append(totalAmount()).append("</b><br/>");
+        result.append("You earned <b>").append(totalFrequentRenterPoints()).append("</b> frequent renter points");
+        return result.toString();
+    }
+
     private int totalFrequentRenterPoints() {
         int totalFrequentRenterPoints = 0;
         for (Rental each : rentals) {
