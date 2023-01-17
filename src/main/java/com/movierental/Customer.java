@@ -25,11 +25,7 @@ public class Customer {
         StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
         for (Rental each : rentals) {
             double thisAmount = each.getAmount();
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if (isTwoDayNewReleaseRental(each))
-                frequentRenterPoints++;
+            frequentRenterPoints += each.getFrequentRenterPoints();
 
             //show figures for this rental
             result.append("\t").append(each.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
@@ -42,8 +38,5 @@ public class Customer {
         return result.toString();
     }
 
-    private boolean isTwoDayNewReleaseRental(Rental rental) {
-        return rental.getMovie().getPriceCode() == Movie.NEW_RELEASE && rental.getDaysRented() > 1;
-    }
 }
 
