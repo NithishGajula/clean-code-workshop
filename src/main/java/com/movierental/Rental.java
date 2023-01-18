@@ -2,8 +2,8 @@ package com.movierental;
 
 public class Rental {
 
-    private int daysRented;
-    private Movie movie;
+    private final int daysRented;
+    private final Movie movie;
 
     public Rental(Movie movie, int daysRented) {
         this.movie = movie;
